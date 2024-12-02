@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLeetCode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>User List</h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Content</th>
+    </tr>
+    <tr th:each="record : ${records}">
+        <td th:text="${record.getId()}"></td>
+        <td th:text="${record.getUsername()}"></td>
+        <td th:text="${record.getContent()}"></td>
+    </tr>
+</table>
+</body>
+</html>
