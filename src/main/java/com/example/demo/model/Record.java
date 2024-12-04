@@ -11,13 +11,14 @@ public class Record {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String password;
     private String content;
 
     public Record() {}
 
-    public Record(String username, String content) {
+    public Record(String username, String password) {
         this.username = username;
-        this.content = content;
+        this.password = password;
     }
 
     public Long getId() {
@@ -32,6 +33,10 @@ public class Record {
         return username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -42,5 +47,9 @@ public class Record {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
