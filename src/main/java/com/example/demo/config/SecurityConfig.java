@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.repository.RecordRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,12 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    private final RecordRepository recordRepository;
-
-    public SecurityConfig(RecordRepository recordRepository) {
-        this.recordRepository = recordRepository;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
