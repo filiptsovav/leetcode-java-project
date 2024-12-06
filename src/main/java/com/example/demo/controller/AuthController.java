@@ -36,12 +36,10 @@ public class AuthController {
     public String registerUser(@RequestParam String username, @RequestParam String password, Model model) {
 
         if (recordRepository.findByUsername(username) != null) {
-            model.addAttribute("error", "Username already exists");
-            return "register";
+            return "redirect:/register?error=true";
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        System.out.println("Encoded password: " + encodedPassword);
         Record newUser = new Record(username, encodedPassword);
         recordRepository.save(newUser);
 
@@ -52,10 +50,6 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error, Model model) {
-        if (error != null) {
-            System.out.println("Login error occurred");
-            model.addAttribute("error", "Invalid username or password.");
-        }
         return "login";
     }
 
