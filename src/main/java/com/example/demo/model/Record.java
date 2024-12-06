@@ -1,5 +1,9 @@
 package com.example.demo.model;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,46 +14,44 @@ public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String content;
+    private String taskName;
+
+    @CreationTimestamp
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime = null;
 
     public Record() {}
 
-    public Record(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public Record(String taskName) {
+        this.taskName = taskName;
     }
 
-    public Long getId() {
-        return id;
+    public Boolean isEnded() {
+        return endTime != null; 
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public String getUsername() {
-        return username;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public String getPassword() {
-        return password;
+    public LocalDateTime getEndTime() {
+        if (!isEnded()) {
+            throw new RuntimeException("a horse with no name"); //TODO
+        }
+
+        return endTime;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void end() {
+        if (isEnded()) {
+            throw new RuntimeException("revolving doors"); //TODO
+        }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        endTime = LocalDateTime.now();
     }
 }

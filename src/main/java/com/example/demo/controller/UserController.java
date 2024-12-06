@@ -8,32 +8,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.model.Record;
-import com.example.demo.repository.RecordRepository;
+import com.example.demo.model.AppUser;
+import com.example.demo.repository.UserRepository;
 
 
 @Controller
-public class RecordController {
+public class UserController {
 
     @Autowired
-    private RecordRepository recordRepository;
+    private UserRepository userRepository;
 
-    @GetMapping("/records")
-    public String getAllRecords(Model model) {
-        model.addAttribute("records", recordRepository.findAll());
-        return "records";
-    }
-
-    @GetMapping("/records/{username}")
+    @GetMapping("/users/{username}")
     public String getAllRecordsByUser(Model model, @PathVariable String username) {
-        model.addAttribute("records", recordRepository.findByUsername(username));
-        return "records";
+        AppUser user = userRepository.findByUsername(username);
+        if (user == null) {
+            return "404"; //TODO
+        }
+        model.addAttribute("user", user);
+        return "user";
     }
 
     @PostMapping("/add")
     public String makeNewRecord(@RequestParam String username, @RequestParam String content) {
-        Record newRecord = new Record(username, content);
-        recordRepository.save(newRecord);
+        AppUser newUser = new AppUser(username, content);
+        userRepository.save(newUser);
         return "redirect:/dashboard";
     }
 }

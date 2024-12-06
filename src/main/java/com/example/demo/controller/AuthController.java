@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Record;
-import com.example.demo.repository.RecordRepository;
+import com.example.demo.model.AppUser;
+import com.example.demo.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     @Autowired
-    private RecordRepository recordRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -35,15 +36,15 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password, Model model) {
 
-        if (recordRepository.findByUsername(username) != null) {
+        if (userRepository.findByUsername(username) != null) {
             model.addAttribute("error", "Username already exists");
             return "register";
         }
 
         String encodedPassword = passwordEncoder.encode(password);
         System.out.println("Encoded password: " + encodedPassword);
-        Record newUser = new Record(username, encodedPassword);
-        recordRepository.save(newUser);
+        AppUser newUser = new AppUser(username, encodedPassword);
+        userRepository.save(newUser);
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -60,5 +61,3 @@ public class AuthController {
     }
 
 }
-
-
