@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 public class DemoController {
     @GetMapping("/")
     public String redirectToIndex() {
-        return "forward:/index.html";
+        return "forward:/login";
         }
 
 
