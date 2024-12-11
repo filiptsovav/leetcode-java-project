@@ -1,32 +1,34 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
-public class Record {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
-    private String content;
 
-    public Record() {}
+    @OneToMany
+    private List<TaskRecord> records = new ArrayList<>();
 
-    public Record(String username, String password) {
+    public AppUser() {}
+
+    public AppUser(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -37,19 +39,11 @@ public class Record {
         return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public List<TaskRecord> getRecords() {
+        return records;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void addRecord(TaskRecord record) {
+        records.add(record);
     }
 }

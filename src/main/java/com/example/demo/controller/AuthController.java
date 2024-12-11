@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Record;
-import com.example.demo.repository.RecordRepository;
+import com.example.demo.model.AppUser;
+import com.example.demo.repository.UserRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     @Autowired
-    private RecordRepository recordRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,14 +42,13 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, @RequestParam String password, HttpServletRequest request, Model model) {
 
-        if (recordRepository.findByUsername(username) != null) {
+        if (userRepository.findByUsername(username) != null) {
             return "redirect:/register?error=true";
-        }
 
 
         String encodedPassword = passwordEncoder.encode(password);
-        Record newUser = new Record(username, encodedPassword);
-        recordRepository.save(newUser);
+        AppUser newUser = new AppUser(username, encodedPassword);
+        userRepository.save(newUser);
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
@@ -71,5 +72,3 @@ public class AuthController {
     }
 
 }
-
-
