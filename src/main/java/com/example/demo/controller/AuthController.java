@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 public class AuthController {
 
@@ -38,21 +37,20 @@ public class AuthController {
         return "register";
     }
 
-
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password, HttpServletRequest request, Model model) {
+    public String registerUser(@RequestParam String username, @RequestParam String password, HttpServletRequest request,
+            Model model) {
 
         if (userRepository.findByUsername(username) != null) {
             return "redirect:/register?error=true";
-
+        }
 
         String encodedPassword = passwordEncoder.encode(password);
         AppUser newUser = new AppUser(username, encodedPassword);
         userRepository.save(newUser);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
+                new UsernamePasswordAuthenticationToken(username, password));
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
@@ -60,8 +58,7 @@ public class AuthController {
         HttpSession session = request.getSession(true);
         session.setAttribute(
                 HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                securityContext
-        );
+                securityContext);
 
         return "redirect:/dashboard";
     }
