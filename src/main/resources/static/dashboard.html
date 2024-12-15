@@ -82,10 +82,16 @@
     <button class="button" onclick="location.href='/taskChosen'">Я уже выбрал задачу</button>
 </div>
 
-<button class="logout-button" onclick="location.href='/logout'">
+<button class="logout-button" onclick="confirmLogout()">
     <i class="fas fa-door-open"></i> Logout
 </button>
 
-<script src="/logout-confirm.js"></script>
+<script>
+    function confirmLogout() {
+        if (confirm("Вы уверены, что хотите выйти?")) {
+            location.href = '/logout';
+        }
+    }
+</script>
 </body>
 </html>
