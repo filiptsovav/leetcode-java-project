@@ -4,43 +4,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Статистика</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
             margin: 0;
+            padding: 20px;
         }
         .container {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            max-width: 800px;
+            margin: auto;
         }
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 15px;
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .chart-container {
+            margin-bottom: 30px;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .charts-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .small-chart-container {
+            width: 45%; /* Уменьшение ширины для круговых диаграмм */
         }
     </style>
 </head>
 <body>
-    <a href="/dashboard" class="back-button">На главную</a>
-    <div class="container">
-        <h1>Статистика</h1>
-        <p>Здесь будет информация о вашей статистике.</p>
+<div class="container">
+    <h2>Статистика</h2>
+    <div class="form-group">
+        <label for="timeframe">Выберите период:</label>
+        <select id="timeframe" class="form-control" onchange="updateStatistics()">
+            <option value="week">Неделя</option>
+            <option value="month">Месяц</option>
+            <option value="year">Год</option>
+        </select>
     </div>
+
+    <div class="chart-container">
+        <canvas id="tasksSolvedChart"></canvas>
+    </div>
+
+    <div class="charts-row">
+        <div class="small-chart-container">
+            <canvas id="avgTimeChart"></canvas>
+        </div>
+        <div class="small-chart-container">
+            <canvas id="firstAttemptChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="tagsStatsChart"></canvas>
+    </div>
+</div>
+
+<script>
+    const ctxTasksSolved = document.getElementById('tasksSolvedChart').getContext('2d');
+    const ctxAvgTime = document.getElementById('avgTimeChart').getContext('2d');
+    const ctxFirstAttempt = document.getElementById('firstAttemptChart').getContext('2d');
+    const ctxTagsStats = document.getElementById('tagsStatsChart').getContext('2d');
+
+    let tasksSolvedChart, avgTimeChart, firstAttemptChart, tagsStatsChart;
+
+    function updateStatistics() {
+        const timeframe = document.getElementById('timeframe').value;
+        const data = fetchData(timeframe);
+        renderCharts(data);
+    }
+
+    function fetchData(timeframe) {
+        const exampleData = {
+            tasksSolved: [5, 15, 20, 10, 25, 10],
+            avgTime: [25, 35, 15],
+            firstAttempt: 80,
+            tags: {
+                "Алгоритмы": 12,
+                "Математика": 9,
+                "Динамическое программирование": 6,
+                "Хэш таблицы": 4
+            }
+        };
+
+        return exampleData;
+    }
+
+    function renderCharts(data) {
+        if (tasksSolvedChart) tasksSolvedChart.destroy();
+        if (avgTimeChart) avgTimeChart.destroy();
+        if (firstAttemptChart) firstAttemptChart.destroy();
+        if (tagsStatsChart) tagsStatsChart.destroy();
+
+        tasksSolvedChart = new Chart(ctxTasksSolved, {
+            type: 'bar',
+            data: {
+                labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                datasets: [{
+                    label: 'Количество решенных задач',
+                    data: data.tasksSolved,
+                    backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        avgTimeChart = new Chart(ctxAvgTime, {
+            type: 'pie',
+            data: {
+                labels: ['Easy', 'Medium', 'Hard'],
+                datasets: [{
+                    label: 'Среднее время решения',
+                    data: data.avgTime,
+                    backgroundColor: ['#2ecc71', '#f1c40f', '#e74c3c'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        firstAttemptChart = new Chart(ctxFirstAttempt, {
+            type: 'doughnut',
+            data: {
+                labels: ['С первого раза', 'Не с первого раза'],
+                datasets: [{
+                    label: 'Процент решения с первого раза',
+                    data: [data.firstAttempt, 100 - data.firstAttempt],
+                    backgroundColor: ['#3498db', '#95a5a6'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        const tagsLabels = Object.keys(data.tags);
+        const tagsData = Object.values(data.tags);
+
+        tagsStatsChart = new Chart(ctxTagsStats, {
+            type: 'bar',
+            data: {
+                labels: tagsLabels,
+                datasets: [{
+                    label: 'Количество решенных задач по тегам',
+                    data: tagsData,
+                    backgroundColor: 'rgba(241, 196, 15, 0.8)',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    window.onload = function() {
+        updateStatistics();
+    };
+</script>
 </body>
 </html>
