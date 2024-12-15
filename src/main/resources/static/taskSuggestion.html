@@ -3,44 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подсказка задачи</title>
+    <title>Предложения задач</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
             margin: 0;
-        }
-        .container {
-            background: white;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
         }
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 15px;
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #495057;
+        }
+        .difficulty-easy {
+            background-color: #2ecc71; /* Зеленый */
+            color: #fff;
+        }
+        .difficulty-medium {
+            background-color: #f1c40f; /* Желтый */
+            color: #fff;
+        }
+        .difficulty-hard {
+            background-color: #e74c3c; /* Красный */
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <a href="/dashboard" class="back-button">На главную</a>
-    <div class="container">
-        <h1>Подсказка задачи</h1>
-        <p>Здесь будет информация о том, какую задачу решать.</p>
-    </div>
+<div class="container">
+    <h2>Предложения задач</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Название задачи</th>
+            <th>Сложность</th>
+            <th>Краткое условие</th>
+            <th>Тэги</th>
+        </tr>
+        </thead>
+        <tbody id="task-table-body">
+        <!-- Данные будут добавлены с помощью JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Функция для загрузки задач с сервера
+    async function fetchTasks() {
+        const response = await fetch('/api/tasks');
+        if (!response.ok) {
+            throw new Error('Ошибка загрузки задач');
+        }
+        return await response.json();
+    }
+
+    // Функция для отображения задач в таблице
+    async function displayTasks() {
+        const tbody = document.getElementById('task-table-body');
+        const tasks = await fetchTasks();
+
+        tasks.forEach((task, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${task.title}</td>
+                <td class="${task.difficulty === 'easy' ? 'difficulty-easy' : task.difficulty === 'medium' ? 'difficulty-medium' : 'difficulty-hard'}">
+                    ${task.difficulty.charAt(0).toUpperCase() + task.difficulty.slice(1)}
+                </td>
+                <td>${task.description}</td>
+                <td>${task.tags.join(', ')}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Отобразить задачи при загрузке страницы
+    window.onload = displayTasks;
+</script>
 </body>
 </html>
