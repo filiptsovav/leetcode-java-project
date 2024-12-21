@@ -18,7 +18,7 @@ public class AppUser {
     private String password;
 
     @OneToMany
-    private List<Record> records = new ArrayList<>();
+    private List<TaskRecord> records = new ArrayList<>();
 
     public AppUser() {}
 
@@ -39,11 +39,11 @@ public class AppUser {
         return password;
     }
 
-    public List<Record> getRecords() {
+    public List<TaskRecord> getRecords() {
         return records;
     }
 
-    public void addRecord(Record record) {
+    public void addRecord(TaskRecord record) {
         records.add(record);
     }
 }

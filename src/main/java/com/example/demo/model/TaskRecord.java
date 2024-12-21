@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Record {
+public class TaskRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,9 @@ public class Record {
 
     private LocalDateTime endTime = null;
 
-    public Record() {}
+    public TaskRecord() {}
 
-    public Record(String taskName) {
+    public TaskRecord(String taskName) {
         this.taskName = taskName;
     }
 

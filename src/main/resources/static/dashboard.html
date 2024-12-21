@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,6 +39,7 @@
         .button-container {
             display: flex;
             gap: 20px;
+            margin-top: 80px; /* Отступ сверху для кнопок */
         }
         .button {
             padding: 15px 25px;
@@ -50,16 +53,39 @@
         .button:hover {
             background-color: #4cae4c;
         }
+        .logout-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: #dc3545; /* Цвет для кнопки выхода */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logout-button i {
+            margin-right: 5px; /* Отступ между иконкой и текстом */
+        }
     </style>
 </head>
 <body>
-    <div class="avatar" onclick="location.href='dashboard.html'">
-        <img src="https://assets.onecompiler.app/42z6hq8u2/42z6hgnnf/%D0%B7%D0%B0%D0%B1%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80%D0%BA%D0%B0.jfif" alt="Аватар пользователя">
-    </div>
-    <div class="button-container">
-        <button class="button" onclick="location.href='/statistics'">Посмотреть статистику</button>
-        <button class="button" onclick="location.href='/taskSuggestion'">Подскажи какую задачу решать</button>
-        <button class="button" onclick="location.href='/taskChosen'">Я уже выбрал задачу</button>
-    </div>
+<div class="avatar" onclick="location.href='dashboard.html'">
+    <img th:src="@{${user.avatarUrl}}" alt="Аватар пользователя" />
+</div>
+<div class="button-container">
+    <button class="button" onclick="location.href='/statistics'">Посмотреть статистику</button>
+    <button class="button" onclick="location.href='/taskSuggestion'">Подскажи какую задачу решать</button>
+    <button class="button" onclick="location.href='/taskChosen'">Я уже выбрал задачу</button>
+</div>
+
+<button class="logout-button" onclick="location.href='/logout'">
+    <i class="fas fa-door-open"></i> Logout
+</button>
+
+<script src="/logout-confirm.js"></script>
 </body>
 </html>

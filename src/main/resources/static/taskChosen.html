@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Выбранная задача</title>
+    <title>Выбор задачи</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -15,32 +16,95 @@
             height: 100vh;
             margin: 0;
         }
-        .container {
-            background: white;
+        .card {
+            width: 100%;
+            max-width: 500px;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 15px;
-            background-color: #5cb85c;
+        input[type="text"] {
+            -moz-appearance: textfield; /* Убираем стрелочки для Firefox */
+        }
+        input[type="text"]::-webkit-outer-spin-button,
+        input[type="text"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Убираем стрелочки для Chrome, Safari и Opera */
+        }
+        .tag {
+            display: inline-block;
+            background-color: #007bff;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px;
         }
+        .tag.red { background-color: #dc3545; }
+        .tag.green { background-color: #28a745; }
+        .tag.yellow { background-color: #ffc107; }
+        .tag.blue { background-color: #007bff; }
     </style>
 </head>
 <body>
-    <a href="/dashboard" class="back-button">На главную</a>
-    <div class="container">
-        <h1>Я уже выбрал задачу</h1>
-        <p>Здесь будет информация о выбранной задаче.</p>
-    </div>
+<div class="card">
+    <h2 class="text-center">Введите задачу</h2>
+    <form action="/submitTask" method="post" class="mt-4" id="taskForm">
+        <div class="form-group">
+            <label for="taskNumber">Номер задачи</label>
+            <input type="number" id="taskNumber" name="taskNumber" class="form-control" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="taskName">Название задачи</label>
+            <input type="text" id="taskName" name="taskName" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="taskTime">Время решения (в минутах)</label>
+            <input type="text" id="taskTime" name="taskTime" class="form-control" required pattern="[0-9]+" title="Введите положительное число">
+        </div>
+        <div class="form-group">
+            <label for="tags">Теги задачи</label>
+            <select id="tags" name="tags" class="form-control" multiple required>
+                <option value="алгоритмы">Алгоритмы</option>
+                <option value="математика">Математика</option>
+                <option value="динамическое программирование">Динамическое программирование</option>
+                <option value="хэш таблицы">Хэш таблицы</option>
+            </select>
+            <small class="form-text text-muted">Удерживайте Ctrl (или Cmd на Mac), чтобы выбрать несколько тегов.</small>
+        </div>
+        <div id="selectedTags" class="mb-3"></div>
+        <div class="form-group">
+            <label for="completionDate">Дата решения</label>
+            <input type="date" id="completionDate" name="completionDate" class="form-control" value="${T(java.time.LocalDate).now().toString()}" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Сохранить задачу</button>
+        </div>
+    </form>
+</div>
+
+<!-- Подключаем Bootstrap и добавляем функциональность на JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    const tagsSelect = document.getElementById('tags');
+    const selectedTagsContainer = document.getElementById('selectedTags');
+
+    tagsSelect.addEventListener('change', function () {
+        selectedTagsContainer.innerHTML = ''; // Сбрасываем выбранные теги
+        const selectedOptions = Array.from(tagsSelect.selectedOptions);
+        selectedOptions.forEach(option => {
+            const tagDiv = document.createElement('div');
+            tagDiv.className = 'tag';
+            tagDiv.textContent = option.value;
+
+            // Присваиваем случайный цвет
+            const colors = ['red', 'green', 'yellow', 'blue'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            tagDiv.classList.add(randomColor);
+
+            selectedTagsContainer.appendChild(tagDiv);
+        });
+    });
+</script>
 </body>
 </html>
