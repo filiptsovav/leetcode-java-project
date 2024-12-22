@@ -61,6 +61,10 @@
             <input type="date" id="completionDate" name="completionDate" class="form-control" th:value="${T(java.time.LocalDate).now()}" required>
         </div>
         <div class="form-group">
+            <label for="attemptNumber">С какой попытки решено</label>
+            <input type="number" id="attemptNumber" name="attemptNumber" class="form-control" required min="1" title="Введите положительное число (1 или больше)">
+        </div>
+        <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Сохранить задачу</button>
         </div>
     </form>

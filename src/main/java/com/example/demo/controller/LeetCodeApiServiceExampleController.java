@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.model.leetCodeApiService.Question;
 import com.example.demo.service.LeetCodeApiService;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class LeetCodeApiServiceExampleController {
     @Autowired
@@ -39,6 +44,7 @@ public class LeetCodeApiServiceExampleController {
             @RequestParam String taskName,
             @RequestParam String taskTime,
             @RequestParam String completionDate,
+            @RequestParam String attemptNumber,
             HttpServletRequest request,
             Model model) {
 
@@ -53,7 +59,10 @@ public class LeetCodeApiServiceExampleController {
         org.springframework.security.core.userdetails.User currentUser =
                 (org.springframework.security.core.userdetails.User)authentication.getPrincipal();
         AppUser appUser = userRepository.findByUsername(currentUser.getUsername());
-        TaskRecord record = new TaskRecord(taskName);
+        LocalDateTime date = LocalDate.parse(completionDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+        Duration duration = Duration.ofMinutes(Long.parseLong(taskTime));
+        Integer tryCounter = Integer.parseInt(attemptNumber);
+        TaskRecord record = new TaskRecord(taskName, date, duration, tryCounter);
         recordRepository.save(record);
         appUser.addRecord(record);
         userRepository.save(appUser);
