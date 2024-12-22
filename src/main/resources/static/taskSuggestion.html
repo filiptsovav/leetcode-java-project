@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список новогодних задач</title>
+    <title>Task List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -14,7 +14,7 @@
         .task-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px; /* Расстояние между карточками */
+            gap: 20px; /* Space between cards */
         }
         .task-card {
             background-color: #ffffff;
@@ -23,17 +23,17 @@
             padding: 15px;
             position: relative;
             overflow: hidden;
-            aspect-ratio: 1; /* Делает карточки квадратными */
+            aspect-ratio: 1; /* Makes cards square */
             transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1; /* Устанавливаем базовый z-index */
+            z-index: 1; /* Set base z-index */
         }
         .task-card:hover {
-            transform: scale(1.5); /* Увеличение при наведении */
-            box-shadow: 0 4px 20px rgba(245, 40, 145, 0.8); /* Тень при наведении */
-            z-index: 2; /* Повышаем z-index при наведении */
+            transform: scale(1.3); /* Scale on hover */
+            box-shadow: 0 4px 20px rgba(245, 40, 145, 0.8); /* Shadow on hover */
+            z-index: 2; /* Increase z-index on hover */
         }
         .task-description {
-            display: none; /* Скрыто по умолчанию */
+            display: none; /* Hidden by default */
             position: absolute;
             top: 0;
             left: 0;
@@ -53,122 +53,124 @@
         }
         .task-info {
             margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.7em;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Список новогодних задач</h1>
+    <h1>Task List</h1>
     <div class="task-container">
-        <!-- Задача 1 -->
+        <!-- Task 1 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Санта и хэш-таблицы</strong><br>
-                Сложность: Легкая<br>
-                Теги: Хэш-таблицы
+                <strong>Santa and Hash Tables</strong><br>
+                Difficulty: Easy<br>
+                Tags: Hash Tables
             </div>
             <div class="task-description">
-                Полное описание: Оптимизировать маршрут Санты с помощью хэш-таблиц!
+                Full Description: Optimize Santa's route using hash tables!
             </div>
         </div>
-        <!-- Задача 2 -->
+        <!-- Task 2 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Алгоритм поиска елки</strong><br>
-                Сложность: Средняя<br>
-                Теги: Алгоритмы
+                <strong>Christmas Tree Search Algorithm</strong><br>
+                Difficulty: Medium<br>
+                Tags: Algorithms
             </div>
             <div class="task-description">
-                Полное описание: Разработать алгоритм, чтобы найти идеальную елку для праздника!
+                Full Description: Develop an algorithm to find the perfect Christmas tree for the holiday!
             </div>
         </div>
-        <!-- Задача 3 -->
+        <!-- Task 3 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Снежинки и сортировка</strong><br>
-                Сложность: Высокая<br>
-                Теги: Структуры данных
+                <strong>Snowflakes and Sorting</strong><br>
+                Difficulty: High<br>
+                Tags: Data Structures
             </div>
             <div class="task-description">
-                Полное описание: Написать алгоритм сортировки для снежинок по размеру и форме.
+                Full Description: Write a sorting algorithm for snowflakes by size and shape.
             </div>
         </div>
-        <!-- Задача 4 -->
+        <!-- Task 4 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Подарки по алгоритму</strong><br>
-                Сложность: Легкая<br>
-                Теги: Алгоритмы
+                <strong>Gift Distribution Algorithm</strong><br>
+                Difficulty: Easy<br>
+                Tags: Algorithms
             </div>
             <div class="task-description">
-                Полное описание: Оптимизировать распределение подарков среди детей!
+                Full Description: Optimize gift distribution among children!
             </div>
         </div>
-        <!-- Задача 5 -->
+        <!-- Task 5 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Новый год с графами</strong><br>
-                Сложность: Средняя<br>
-                Теги: Структуры данных
+                <strong>New Year with Graphs</strong><br>
+                Difficulty: Medium<br>
+                Tags: Data Structures
             </div>
             <div class="task-description">
-                Полное описание: Создать граф для маршрута новогодней вечеринки.
+                Full Description: Create a graph for the route of the New Year's party.
             </div>
         </div>
-        <!-- Задача 6 -->
+        <!-- Task 6 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Математика снеговиков</strong><br>
-                Сложность: Средняя<br>
-                Теги: Математика
+                <strong>Snowman Mathematics</strong><br>
+                Difficulty: Medium<br>
+                Tags: Mathematics
             </div>
             <div class="task-description">
-                Полное описание: Рассчитать количество снега для построения идеального снеговика.
+                Full Description: Calculate the amount of snow needed to build the perfect snowman.
             </div>
         </div>
-        <!-- Задача 7 -->
+        <!-- Task 7 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Рождественские алгоритмы</strong><br>
-                Сложность: Высокая<br>
-                Теги: Алгоритмы
+                <strong>Christmas Algorithms</strong><br>
+                Difficulty: High<br>
+                Tags: Algorithms
             </div>
             <div class="task-description">
-                Полное описание: Разработать алгоритм для поиска всех подарков под елкой!
+                Full Description: Develop an algorithm to find all the gifts under the tree!
             </div>
         </div>
-        <!-- Задача 8 -->
+        <!-- Task 8 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Код Деда Мороза</strong><br>
-                Сложность: Средняя<br>
-                Теги: Хэш-таблицы
+                <strong>Santa's Code</strong><br>
+                Difficulty: Medium<br>
+                Tags: Hash Tables
             </div>
             <div class="task-description">
-                Полное описание: Создать алгоритм для шифрования подарков!
+                Full Description: Create an algorithm for encrypting gifts!
             </div>
         </div>
-        <!-- Задача 9 -->
+        <!-- Task 9 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Снег и структуры данных</strong><br>
-                Сложность: Средняя<br>
-                Теги: Структуры данных
+                <strong>Snow and Data Structures</strong><br>
+                Difficulty: Medium<br>
+                Tags: Data Structures
             </div>
             <div class="task-description">
-                Полное описание: Оптимизировать хранение информации о зимних развлечениях.
+                Full Description: Optimize the storage of information about winter activities.
             </div>
         </div>
-        <!-- Задача 10 -->
+        <!-- Task 10 -->
         <div class="task-card">
             <div class="task-info">
-                <strong>Новогодние загадки</strong><br>
-                Сложность: Легкая<br>
-                Теги: Математика
+                <strong>New Year Riddles</strong><br>
+                Difficulty: Easy<br>
+                Tags: Mathematics
             </div>
             <div class="task-description">
-                Полное описание: Создать список загадок для новогодней вечеринки!
+                Full Description: Create a list of riddles for the New Year's party!
             </div>
         </div>
     </div>
