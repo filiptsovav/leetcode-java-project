@@ -10,13 +10,14 @@ import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.leetCodeApiService.Question;
 import com.example.demo.service.LeetCodeApiService;
 
-@RestController
+@Controller
 public class LeetCodeApiServiceExampleController {
     @Autowired
     private LeetCodeApiService leetCodeApiService;
@@ -45,7 +46,7 @@ public class LeetCodeApiServiceExampleController {
         try {
             question = leetCodeApiService.getQuestion(taskName);
         } catch (Exception e) {
-            return "redirect:/dashboard";
+            return "redirect:/taskChosen?error=true";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
