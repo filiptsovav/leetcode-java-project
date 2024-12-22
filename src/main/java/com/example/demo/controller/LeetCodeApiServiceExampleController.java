@@ -32,7 +32,7 @@ public class LeetCodeApiServiceExampleController {
         return leetCodeApiService.getQuestion(questionName); //TODO can throw exception
     }
 
-    @PostMapping("/submitTask")
+    @PostMapping("/taskChosen")
     @Transactional
     public String submitTask(
             @RequestParam String taskName,
@@ -45,7 +45,7 @@ public class LeetCodeApiServiceExampleController {
         try {
             question = leetCodeApiService.getQuestion(taskName);
         } catch (Exception e) {
-            return "redirect:/taskChosen?error=true";
+            return "redirect:/dashboard";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
