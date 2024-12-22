@@ -45,6 +45,10 @@
             <input type="text" id="taskTime" name="taskTime" class="form-control" required pattern="[0-9]+" title="Please enter a positive number">
         </div>
         <div class="form-group">
+            <label for="attempts">Number of Attempts</label>
+            <input type="number" id="attempts" name="attempts" class="form-control" min="1" required>
+        </div>
+        <div class="form-group">
             <label for="completionDate">Completion Date</label>
             <input type="date" id="completionDate" name="completionDate" class="form-control" value="${T(java.time.LocalDate).now().toString()}" required>
         </div>
@@ -56,12 +60,11 @@
 
 <!-- Подключаем Bootstrap и добавляем функциональность на JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     const tagsSelect = document.getElementById('tags');
     const selectedTagsContainer = document.getElementById('selectedTags');
-});
 </script>
 </body>
 </html>
