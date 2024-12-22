@@ -3,87 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Предложения задач</title>
+    <title>Список новогодних задач</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            color: #333;
-            margin: 0;
             padding: 20px;
         }
-        h2 {
+        .task-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px; /* Расстояние между карточками */
+        }
+        .task-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1; /* Делает карточки квадратными */
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1; /* Устанавливаем базовый z-index */
+        }
+        .task-card:hover {
+            transform: scale(1.5); /* Увеличение при наведении */
+            box-shadow: 0 4px 20px rgba(245, 40, 145, 0.8); /* Тень при наведении */
+            z-index: 2; /* Повышаем z-index при наведении */
+        }
+        .task-description {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 197, 227, 1);
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
             text-align: center;
-            margin-bottom: 20px;
-            font-weight: 600;
-            color: #495057;
+            font-size: 1.2em;
         }
-        .difficulty-easy {
-            background-color: #2ecc71; /* Зеленый */
-            color: #fff;
+        .task-card:hover .task-description {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .difficulty-medium {
-            background-color: #f1c40f; /* Желтый */
-            color: #fff;
-        }
-        .difficulty-hard {
-            background-color: #e74c3c; /* Красный */
-            color: #fff;
+        .task-info {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h2>Предложения задач</h2>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Название задачи</th>
-            <th>Сложность</th>
-            <th>Краткое условие</th>
-            <th>Тэги</th>
-        </tr>
-        </thead>
-        <tbody id="task-table-body">
-        <!-- Данные будут добавлены с помощью JavaScript -->
-        </tbody>
-    </table>
+    <h1>Список новогодних задач</h1>
+    <div class="task-container">
+        <!-- Задача 1 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Санта и хэш-таблицы</strong><br>
+                Сложность: Легкая<br>
+                Теги: Хэш-таблицы
+            </div>
+            <div class="task-description">
+                Полное описание: Оптимизировать маршрут Санты с помощью хэш-таблиц!
+            </div>
+        </div>
+        <!-- Задача 2 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Алгоритм поиска елки</strong><br>
+                Сложность: Средняя<br>
+                Теги: Алгоритмы
+            </div>
+            <div class="task-description">
+                Полное описание: Разработать алгоритм, чтобы найти идеальную елку для праздника!
+            </div>
+        </div>
+        <!-- Задача 3 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Снежинки и сортировка</strong><br>
+                Сложность: Высокая<br>
+                Теги: Структуры данных
+            </div>
+            <div class="task-description">
+                Полное описание: Написать алгоритм сортировки для снежинок по размеру и форме.
+            </div>
+        </div>
+        <!-- Задача 4 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Подарки по алгоритму</strong><br>
+                Сложность: Легкая<br>
+                Теги: Алгоритмы
+            </div>
+            <div class="task-description">
+                Полное описание: Оптимизировать распределение подарков среди детей!
+            </div>
+        </div>
+        <!-- Задача 5 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Новый год с графами</strong><br>
+                Сложность: Средняя<br>
+                Теги: Структуры данных
+            </div>
+            <div class="task-description">
+                Полное описание: Создать граф для маршрута новогодней вечеринки.
+            </div>
+        </div>
+        <!-- Задача 6 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Математика снеговиков</strong><br>
+                Сложность: Средняя<br>
+                Теги: Математика
+            </div>
+            <div class="task-description">
+                Полное описание: Рассчитать количество снега для построения идеального снеговика.
+            </div>
+        </div>
+        <!-- Задача 7 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Рождественские алгоритмы</strong><br>
+                Сложность: Высокая<br>
+                Теги: Алгоритмы
+            </div>
+            <div class="task-description">
+                Полное описание: Разработать алгоритм для поиска всех подарков под елкой!
+            </div>
+        </div>
+        <!-- Задача 8 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Код Деда Мороза</strong><br>
+                Сложность: Средняя<br>
+                Теги: Хэш-таблицы
+            </div>
+            <div class="task-description">
+                Полное описание: Создать алгоритм для шифрования подарков!
+            </div>
+        </div>
+        <!-- Задача 9 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Снег и структуры данных</strong><br>
+                Сложность: Средняя<br>
+                Теги: Структуры данных
+            </div>
+            <div class="task-description">
+                Полное описание: Оптимизировать хранение информации о зимних развлечениях.
+            </div>
+        </div>
+        <!-- Задача 10 -->
+        <div class="task-card">
+            <div class="task-info">
+                <strong>Новогодние загадки</strong><br>
+                Сложность: Легкая<br>
+                Теги: Математика
+            </div>
+            <div class="task-description">
+                Полное описание: Создать список загадок для новогодней вечеринки!
+            </div>
+        </div>
+    </div>
 </div>
 
-<script>
-    // Функция для загрузки задач с сервера
-    async function fetchTasks() {
-        const response = await fetch('/api/tasks');
-        if (!response.ok) {
-            throw new Error('Ошибка загрузки задач');
-        }
-        return await response.json();
-    }
-
-    // Функция для отображения задач в таблице
-    async function displayTasks() {
-        const tbody = document.getElementById('task-table-body');
-        const tasks = await fetchTasks();
-
-        tasks.forEach((task, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${task.title}</td>
-                <td class="${task.difficulty === 'easy' ? 'difficulty-easy' : task.difficulty === 'medium' ? 'difficulty-medium' : 'difficulty-hard'}">
-                    ${task.difficulty.charAt(0).toUpperCase() + task.difficulty.slice(1)}
-                </td>
-                <td>${task.description}</td>
-                <td>${task.tags.join(', ')}</td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // Отобразить задачи при загрузке страницы
-    window.onload = displayTasks;
-</script>
 </body>
 </html>
