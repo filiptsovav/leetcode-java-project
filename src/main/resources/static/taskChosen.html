@@ -12,7 +12,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center; /* Изменено на center для выравнивания */
             height: 100vh;
             margin: 0;
         }
@@ -22,7 +22,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            margin: auto; /* Центрирование карточки */
+            margin-bottom: 10px; /* Добавлено для отступа между карточкой и кнопкой */
         }
         input[type="text"] {
             -moz-appearance: textfield; /* Убираем стрелочки для Firefox */
@@ -31,10 +31,19 @@
         input[type="text"]::-webkit-inner-spin-button {
             -webkit-appearance: none; /* Убираем стрелочки для Chrome, Safari и Opera */
         }
-        .btn-pink {
-            background-color: #ff69b4; /* Розовый цвет */
-            color: white; /* Цвет текста */
-            width: 150px; /* Установка фиксированной ширины */
+        .back-to-home {
+            margin: 30px; /* Убрано значение отступа */
+            padding: 10px 20px; /* Добавляем отступ для увеличения кликабельной области */
+            font-size: 1.2em;
+            text-decoration: none;
+            color: black;
+            background-color: #ffc5e3;
+            border-radius: 5px; /* Закругленные углы */
+            text-align: center; /* Центрируем текст */
+        }
+        .back-to-home:hover {
+            background-color: #ffc8ff;
+            text-decoration: none; /* Убираем подчеркивание при наведении */
         }
     </style>
 </head>
@@ -64,8 +73,10 @@
     </form>
 </div>
 
-<!-- Кнопка для возврата на главную страницу внизу -->
-<a href="dashboard.html" class="btn btn-pink btn-block mb-3">Home Page</a>
+<!-- Кнопка для возврата на главную страницу -->
+<a href="dashboard.html" class="back-to-home">
+    Return to Home Page
+</a>
 
 <!-- Подключаем Bootstrap и добавляем функциональность на JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
