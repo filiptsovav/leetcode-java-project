@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.User;
 
 import com.example.demo.model.leetCodeApiService.Question;
 import com.example.demo.service.LeetCodeApiService;
@@ -48,8 +49,7 @@ public class LeetCodeApiServiceExampleController {
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User currentUser =
-                (org.springframework.security.core.userdetails.User)authentication.getPrincipal();
+        User currentUser = (User) authentication.getPrincipal();
         AppUser appUser = userRepository.findByUsername(currentUser.getUsername());
         TaskRecord record = new TaskRecord(taskName);
         recordRepository.save(record);
