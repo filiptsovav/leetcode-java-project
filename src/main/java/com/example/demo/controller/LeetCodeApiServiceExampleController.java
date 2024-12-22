@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.model.AppUser;
 import com.example.demo.model.TaskRecord;
+import com.example.demo.repository.RecordRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,12 +24,16 @@ public class LeetCodeApiServiceExampleController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RecordRepository recordRepository;
+
     @GetMapping("/getQuestion/{questionName}")
     public Question sendRequest(@PathVariable String questionName) {
         return leetCodeApiService.getQuestion(questionName); //TODO can throw exception
     }
 
     @PostMapping("/submitTask")
+    @Transactional
     public String submitTask(
             @RequestParam String taskName,
             @RequestParam String taskTime,
@@ -43,11 +49,13 @@ public class LeetCodeApiServiceExampleController {
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AppUser currentUser = (AppUser) authentication.getPrincipal();
-
+        org.springframework.security.core.userdetails.User currentUser =
+                (org.springframework.security.core.userdetails.User)authentication.getPrincipal();
+        AppUser appUser = userRepository.findByUsername(currentUser.getUsername());
         TaskRecord record = new TaskRecord(taskName);
-        currentUser.addRecord(record);
-        userRepository.save(currentUser);
+        recordRepository.save(record);
+        appUser.addRecord(record);
+        userRepository.save(appUser);
         return "redirect:/taskChosen?success=true";
     }
 
