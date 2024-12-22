@@ -57,21 +57,18 @@ public class AppUser {
 
     public Map<String, Long> getSolvedProblemsByDifficulty(LeetCodeApiService service) {
         return records.stream()
-                .filter(TaskRecord::isEnded)
                 .map(record -> service.getQuestion(record.getTaskName()))
                 .collect(Collectors.groupingBy(Question::getDifficulty, Collectors.counting()));
     }
 
     public Map<String, Long> getSolvedProblemsByTopic(LeetCodeApiService service) {
         return records.stream()
-                .filter(TaskRecord::isEnded)
                 .flatMap(record -> service.getQuestion(record.getTaskName()).getTopicTags().stream())
                 .collect(Collectors.groupingBy(TopicTag::getName, Collectors.counting()));
     }
 
     public Map<DayOfWeek, Long> getSolvedProblemsByDayOfWeek() {
         return records.stream()
-                .filter(TaskRecord::isEnded)
-                .collect(Collectors.groupingBy(record -> record.getEndTime().getDayOfWeek(), Collectors.counting()));
+                .collect(Collectors.groupingBy(record -> record.getDate().getDayOfWeek(), Collectors.counting()));
     }
 }
