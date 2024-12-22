@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет</title>
+    <title>Personal Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
@@ -55,7 +55,7 @@
             transition: background-color 0.3s, transform 0.3s;
         }
         .button:hover {
-            transform: scale(1.5); /* Увеличение при наведении */
+            transform: scale(1.5); /* Scale on hover */
         }
         .button1 {
             background-color: #800080;
@@ -91,21 +91,21 @@
 </head>
 <body>
 <div class="avatar" onclick="location.href='dashboard.html'">
-    <img src="avatar.jpeg" alt="Аватар пользователя" />
+    <img src="avatar.jpeg" alt="User Avatar" />
 </div>
 <div class="button-container">
-    <button class="button button1" onclick="location.href='/statistics'">Посмотреть статистику</button>
-    <button class="button button2" onclick="location.href='/taskSuggestion'">Подскажи задачу</button>
-    <button class="button button3" onclick="location.href='/taskChosen'">Выбрал задачу</button>
+    <button class="button button1" onclick="location.href='/statistics'">View Statistics</button>
+    <button class="button button2" onclick="location.href='/taskSuggestion'">Suggest a Task</button>
+    <button class="button button3" onclick="location.href='/taskChosen'">Task Selected</button>
 </div>
 
 <button class="logout-button" onclick="confirmLogout()">
-    <i class="fas fa-door-open"></i> Выход
+    <i class="fas fa-door-open"></i> Logout
 </button>
 
 <script>
     function confirmLogout() {
-        if (confirm("Вы уверены, что хотите выйти?")) {
+        if (confirm("Are you sure you want to log out?")) {
             location.href = '/logout';
         }
     }
