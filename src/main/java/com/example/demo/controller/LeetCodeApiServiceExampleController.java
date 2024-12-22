@@ -52,7 +52,7 @@ public class LeetCodeApiServiceExampleController {
         try {
             leetCodeApiService.getQuestion(taskName);
         } catch (Exception e) {
-            return "redirect:/taskChosen?error=true";
+            return "redirect:/dashboard";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
