@@ -24,16 +24,13 @@ public class DemoController {
 
     @GetMapping("/taskChosen")
     public String taskChosen() {
-        return "forward:/taskChosen.html";
+        return "taskChosen";
     }
+
 
     @GetMapping("/taskSuggestion")
     public String taskSuggestion() {
         return "forward:/taskSuggestion.html";
     }
 
-    @GetMapping("/addform")
-    public String redirectToCreate() {
-        return "forward:/create.html";
-    }
 }
