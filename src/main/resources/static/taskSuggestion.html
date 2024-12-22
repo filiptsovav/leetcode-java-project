@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,7 +55,22 @@
         .task-info {
             margin-bottom: 10px;
             text-align: center;
-            font-size: 1.7em;
+            font-size: 1.5em;
+        }
+        .back-to-home {
+            display: block;
+            margin: 30px auto 0; /* Center the button and add margin */
+            padding: 10px 20px; /* Add padding for a larger clickable area */
+            font-size: 1.2em;
+            text-decoration: none;
+            color: black;
+            background-color: #ffc5e3;
+            border-radius: 5px; /* Rounded corners */
+            text-align: center; /* Center text */
+        }
+        .back-to-home:hover {
+            background-color: #ffc8ff;
+            text-decoration: none; /* Remove underline on hover */
         }
     </style>
 </head>
@@ -174,6 +190,9 @@
             </div>
         </div>
     </div>
+    <a href="dashboard.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i> Return to Home Page
+    </a>
 </div>
 
 </body>
