@@ -1,7 +1,14 @@
 package com.example.demo.model;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.example.demo.model.leetCodeApiService.Question;
+import com.example.demo.model.leetCodeApiService.TopicTag;
+import com.example.demo.service.LeetCodeApiService;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +27,8 @@ public class AppUser {
     @OneToMany
     private List<TaskRecord> records = new ArrayList<>();
 
-    public AppUser() {}
+    public AppUser() {
+    }
 
     public AppUser(String username, String password) {
         this.username = username;
@@ -45,5 +53,25 @@ public class AppUser {
 
     public void addRecord(TaskRecord record) {
         records.add(record);
+    }
+
+    public Map<String, Long> getSolvedProblemsByDifficulty(LeetCodeApiService service) {
+        return records.stream()
+                .filter(TaskRecord::isEnded)
+                .map(record -> service.getQuestion(record.getTaskName()))
+                .collect(Collectors.groupingBy(Question::getDifficulty, Collectors.counting()));
+    }
+
+    public Map<String, Long> getSolvedProblemsByTopic(LeetCodeApiService service) {
+        return records.stream()
+                .filter(TaskRecord::isEnded)
+                .flatMap(record -> service.getQuestion(record.getTaskName()).getTopicTags().stream())
+                .collect(Collectors.groupingBy(TopicTag::getName, Collectors.counting()));
+    }
+
+    public Map<DayOfWeek, Long> getSolvedProblemsByDayOfWeek() {
+        return records.stream()
+                .filter(TaskRecord::isEnded)
+                .collect(Collectors.groupingBy(record -> record.getEndTime().getDayOfWeek(), Collectors.counting()));
     }
 }

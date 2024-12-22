@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.example.demo.exceptions.TaskIsAlreadyEndedException;
+import com.example.demo.exceptions.TaskIsNotEndedException;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,7 +44,7 @@ public class TaskRecord {
 
     public LocalDateTime getEndTime() {
         if (!isEnded()) {
-            throw new RuntimeException("a horse with no name"); //TODO
+            throw new TaskIsNotEndedException("Task isn't ended");
         }
 
         return endTime;
@@ -49,7 +52,7 @@ public class TaskRecord {
 
     public void end() {
         if (isEnded()) {
-            throw new RuntimeException("revolving doors"); //TODO
+            throw new TaskIsAlreadyEndedException("Task is already ended");
         }
 
         endTime = LocalDateTime.now();
