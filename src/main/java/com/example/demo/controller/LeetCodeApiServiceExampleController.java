@@ -6,7 +6,6 @@ import com.example.demo.repository.RecordRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,9 +41,8 @@ public class LeetCodeApiServiceExampleController {
             HttpServletRequest request,
             Model model) {
 
-        Question question;
         try {
-            question = leetCodeApiService.getQuestion(taskName);
+            leetCodeApiService.getQuestion(taskName);
         } catch (Exception e) {
             return "redirect:/taskChosen?error=true";
         }
