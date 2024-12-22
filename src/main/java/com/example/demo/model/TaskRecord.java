@@ -1,11 +1,7 @@
 package com.example.demo.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.example.demo.exceptions.TaskIsAlreadyEndedException;
-import com.example.demo.exceptions.TaskIsNotEndedException;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,42 +15,49 @@ public class TaskRecord {
     private Long id;
     private String taskName;
 
-    @CreationTimestamp
-    private LocalDateTime startTime;
+    private LocalDateTime date;
+    private Duration duration;
 
-    private LocalDateTime endTime = null;
+    private Integer tryCounter;
 
     public TaskRecord() {}
 
-    public TaskRecord(String taskName) {
+    public TaskRecord(String taskName, LocalDateTime date, Duration duration, Integer tryCounter) {
         this.taskName = taskName;
-    }
-
-    public Boolean isEnded() {
-        return endTime != null; 
+        this.date = date;
+        this.duration = duration;
+        this.tryCounter = tryCounter;
     }
 
     public String getTaskName() {
         return taskName;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
-    public LocalDateTime getEndTime() {
-        if (!isEnded()) {
-            throw new TaskIsNotEndedException("Task isn't ended");
-        }
-
-        return endTime;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void end() {
-        if (isEnded()) {
-            throw new TaskIsAlreadyEndedException("Task is already ended");
-        }
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
-        endTime = LocalDateTime.now();
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public Integer getTryCounter() {
+        return tryCounter;
+    }
+
+    public void setTryCounter(Integer tryCounter) {
+        this.tryCounter = tryCounter;
     }
 }
