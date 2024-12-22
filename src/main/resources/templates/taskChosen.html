@@ -6,11 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Выбор задачи</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            -moz-appearance: textfield; /* Убираем стрелочки для Firefox */
+        }
+        input[type="text"]::-webkit-outer-spin-button,
+        input[type="text"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Убираем стрелочки для Chrome, Safari и Opera */
+        }
+        .tag {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px;
+        }
+        .tag.red { background-color: #dc3545; }
+        .tag.green { background-color: #28a745; }
+        .tag.yellow { background-color: #ffc107; }
+        .tag.blue { background-color: #007bff; }
+    </style>
 </head>
 <body>
 <div class="card">
     <h2 class="text-center">Введите данные задачи</h2>
-    <form action="/submitTask" method="post" class="mt-4">
+    <form action="/taskChosen" method="post" class="mt-4">
         <div class="form-group">
             <label for="taskName">Название задачи</label>
             <input type="text" id="taskName" name="taskName" class="form-control" required>
