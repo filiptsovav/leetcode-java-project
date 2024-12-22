@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -70,5 +71,34 @@ public class AppUser {
     public Map<DayOfWeek, Long> getSolvedProblemsByDayOfWeek() {
         return records.stream()
                 .collect(Collectors.groupingBy(record -> record.getDate().getDayOfWeek(), Collectors.counting()));
+    }
+
+    public List<Question> getRecommendedTasksSlugs(LeetCodeApiService service) {
+        List<TaskRecord> sortedRecords = records.stream()
+                .sorted(Comparator.comparing(TaskRecord::getTryCounter).reversed()
+                        .thenComparing(TaskRecord::getDate))
+                .collect(Collectors.toList());
+
+        List<String> taskNames = sortedRecords.stream()
+                .map(TaskRecord::getTaskName)
+                .collect(Collectors.toList());
+        
+        List<Question> similarQuestionsList = new ArrayList<>();
+        for (String taskName : taskNames) {
+            if(similarQuestionsList.size() >= 6) {
+                break;
+            }
+            Question question = service.getQuestion(taskName);
+            List<String> slugs = question.getSimilarQuestionSlugs();
+            for (String slug : slugs) {
+                if (similarQuestionsList.size() >= 6 || taskNames.contains(slug)) {
+                    break;
+                }
+                Question similarQuestion = service.getQuestion(slug);
+
+                similarQuestionsList.add(similarQuestion);
+            }
+        }
+        return similarQuestionsList;
     }
 }
