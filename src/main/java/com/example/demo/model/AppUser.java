@@ -83,7 +83,7 @@ public class AppUser {
                 .collect(Collectors.groupingBy(record -> record.getDate().getDayOfWeek(), Collectors.counting()));
     }
 
-    public List<Question> getRecommendedTasksSlugs(LeetCodeApiService service) {
+    public List<Question> getRecommendedTasks(LeetCodeApiService service) {
         List<TaskRecord> sortedRecords = records.stream()
                 .sorted(Comparator.comparing(TaskRecord::getTryCounter).reversed()
                         .thenComparing(TaskRecord::getDate))
@@ -94,6 +94,12 @@ public class AppUser {
                 .collect(Collectors.toList());
         
         List<Question> similarQuestionsList = new ArrayList<>();
+        
+        if (taskNames.isEmpty()) {
+            taskNames.add("two-sum");
+            similarQuestionsList.add( service.getQuestion("two-sum"));
+        }
+        
         for (String taskName : taskNames) {
             if(similarQuestionsList.size() >= 6) {
                 break;

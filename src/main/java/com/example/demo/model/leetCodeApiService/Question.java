@@ -49,6 +49,9 @@ public class Question {
     }
 
     public String getContent() {
+        if (content == null) {
+            return "<strong>Available with premium subscription only</strong>";
+        }
         return content;
     }
 

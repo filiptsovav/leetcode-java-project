@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class LeetCodeApiServiceExampleController {
@@ -67,4 +68,15 @@ public class LeetCodeApiServiceExampleController {
         return "redirect:/taskChosen?success=true";
     }
 
+    @GetMapping("/taskSuggestion")
+    public String taskSuggestion(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User)authentication.getPrincipal();
+        AppUser appUser = userRepository.findByUsername(currentUser.getUsername());
+
+        List<Question> recommendedTasks = appUser.getRecommendedTasks(leetCodeApiService);
+        model.addAttribute("recommendedTasks", recommendedTasks);
+
+        return "taskSuggestion";
+    }
 }
