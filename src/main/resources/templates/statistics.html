@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +39,7 @@
             justify-content: space-between;
         }
         .small-chart-container {
-            width: 45%; /* Уменьшение ширины для круговых диаграмм */
+            width: 45%;
         }
     </style>
 </head>
@@ -52,8 +52,6 @@
         Day of Week Stats: [[${dayOfWeekStats}]]
         Average Time: [[${avgTime}]]
         First Attempt: [[${firstAttempt}]]
-        Tags Labels: [[${tagsLabels}]]
-        Tags Data: [[${tagsData}]]
     </pre>
 </div>
 <div class="container">
@@ -65,7 +63,6 @@
             <option value="month" selected>Месяц</option>
             <option value="year">Год</option>
         </select>
-        <input type="hidden" id="timeframeHidden" name="timeframe" value="month">
     </div>
 
     <div class="charts-row">
@@ -82,28 +79,30 @@
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
+    // Данные из Thymeleaf
+    const difficultyStats = JSON.parse([[${difficultyStats}]]);
+    const topicStats = JSON.parse([[${topicStats}]]);
+    const dayOfWeekStats = JSON.parse([[${dayOfWeekStats}]]);
+    const avgTimeData = JSON.parse([[${avgTime}]]);
+    const firstAttemptData = JSON.parse([[${firstAttempt}]]);
+
+
+// Отладка
+    console.log("Difficulty Stats:", difficultyStats);
+    console.log("Topic Stats:", topicStats);
+    console.log("Average Time Data:", avgTimeData);
+    console.log("First Attempt Data:", firstAttemptData);
+
+    // Графики
     const ctxAvgTime = document.getElementById('avgTimeChart').getContext('2d');
     const ctxFirstAttempt = document.getElementById('firstAttemptChart').getContext('2d');
     const ctxTagsStats = document.getElementById('tagsStatsChart').getContext('2d');
 
     let avgTimeChart, firstAttemptChart, tagsStatsChart;
 
-    const difficultyStats = /*[[${difficultyStats}]]*/ {};
-const topicStats = /*[[${topicStats}]]*/ {};
-const dayOfWeekStats = /*[[${dayOfWeekStats}]]*/ {};
-const avgTimeData = /*[[${avgTime}]]*/ [];
-const firstAttemptData = /*[[${firstAttempt}]]*/ [];
-console.log("Difficulty Stats:", difficultyStats);
-console.log("Topic Stats:", topicStats);
-console.log("Day of Week Stats:", dayOfWeekStats);
-console.log("Average Time Data:", avgTimeData);
-console.log("First Attempt Data:", firstAttemptData);
-    function updateStatistics() {
-        renderCharts();
-    }
-
     function renderCharts() {
+        // Уничтожение старых графиков перед перерисовкой
         if (avgTimeChart) avgTimeChart.destroy();
         if (firstAttemptChart) firstAttemptChart.destroy();
         if (tagsStatsChart) tagsStatsChart.destroy();
@@ -114,47 +113,55 @@ console.log("First Attempt Data:", firstAttemptData);
             data: {
                 labels: ['Easy', 'Medium', 'Hard'],
                 datasets: [{
-                    label: 'Среднее время решения',
-                    data: avgTimeData, // Используем определенные данные
+                    data: avgTimeData,
                     backgroundColor: ['#2ecc71', '#f1c40f', '#e74c3c'],
                 }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
             }
         });
 
-        // График решения с первого раза
+        // График решений с первого раза
         firstAttemptChart = new Chart(ctxFirstAttempt, {
             type: 'doughnut',
             data: {
                 labels: ['С первого раза', 'Не с первого раза'],
                 datasets: [{
-                    label: 'Процент решения с первого раза',
-                    data: firstAttemptData, // Используем определенные данные
+                    data: firstAttemptData,
                     backgroundColor: ['#3498db', '#95a5a6'],
+                }]
+            }
+        });
+
+        // График по тематикам
+        const topicLabels = Object.keys(topicStats);
+        const topicData = Object.values(topicStats);
+        tagsStatsChart = new Chart(ctxTagsStats, {
+            type: 'bar',
+            data: {
+                labels: topicLabels,
+                datasets: [{
+                    label: 'Количество решений',
+                    data: topicData,
+                    backgroundColor: '#8e44ad',
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false
+                scales: {
+                    y: { beginAtZero: true }
+                }
             }
         });
     }
 
-    window.onload = function() {
-        updateStatistics();
+    function updateStatistics() {
+        const timeframe = document.getElementById('timeframe').value;
+        console.log("Selected timeframe:", timeframe);
+        // Здесь можно добавить логику для загрузки данных, если это необходимо
+        renderCharts();
+    }
+
+    window.onload = function () {
+        renderCharts();
     };
 </script>
-<script>function updateStatistics() {
-    const selectedTimeframe = document.getElementById('timeframe').value;
-    document.getElementById('timeframeHidden').value = selectedTimeframe;
-    window.location.href = '/statistics?timeframe=' + selectedTimeframe;
-}
-
-window.onload = function() {
-    updateStatistics();
-};</script>
 </body>
 </html>
