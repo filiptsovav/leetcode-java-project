@@ -60,13 +60,17 @@ public class AppUser {
         records.add(record);
     }
 
-    public Map<String, Long> getSolvedProblemsByDifficulty(LeetCodeApiService service, Duration period) {
+    public List<Double> getSolvedProblemsByDifficulty(LeetCodeApiService service, Duration period) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startTime = now.minus(period);
+
         return records.stream()
                 .filter(record -> record.getDate().isAfter(startTime))
                 .map(record -> service.getQuestion(record.getTaskName()))
-                .collect(Collectors.groupingBy(Question::getDifficulty, Collectors.counting()));
+                .collect(Collectors.groupingBy(Question::getDifficulty, Collectors.counting()))
+                .values().stream()
+                .map(Long::doubleValue)
+                .collect(Collectors.toList());
     }
 
     public Map<String, Long> getSolvedProblemsByTopic(LeetCodeApiService service, Duration period) {
@@ -122,18 +126,37 @@ public class AppUser {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startTime = now.minus(period);
         Map<String, DoubleSummaryStatistics> statsMap = new HashMap<>();
+
         records.stream()
                 .filter(record -> record.getDate().isAfter(startTime))
                 .forEach(record -> {
                     Question question = service.getQuestion(record.getTaskName());
-                    String difficulty = question.getDifficulty();
-                    long duration = record.getDuration().toMinutes();
 
-                    statsMap.computeIfAbsent(difficulty, k -> new DoubleSummaryStatistics()).accept(duration);
+                    if (question != null) {
+                        String difficulty = question.getDifficulty();
+                        Duration duration = record.getDuration();
+
+                        if (duration != null) {
+                            long durationInMinutes = duration.toMinutes();
+                            System.out.println("Task: " + record.getTaskName() + ", Difficulty: " + difficulty + ", Duration: " + durationInMinutes);
+                            DoubleSummaryStatistics stats = statsMap.get(difficulty);
+                            if (stats == null) {
+                                stats = new DoubleSummaryStatistics();
+                                statsMap.put(difficulty, stats);
+                            }
+                            stats.accept(durationInMinutes);
+                        } else {
+                            System.out.println("Duration is null for task: " + record.getTaskName());
+                        }
+                    } else {
+                        System.out.println("Question not found for task: " + record.getTaskName());
+                    }
                 });
-        double easyAvg = statsMap.getOrDefault("easy", new DoubleSummaryStatistics()).getAverage();
-        double mediumAvg = statsMap.getOrDefault("medium", new DoubleSummaryStatistics()).getAverage();
-        double hardAvg = statsMap.getOrDefault("hard", new DoubleSummaryStatistics()).getAverage();
+
+        double easyAvg = statsMap.getOrDefault("Easy", new DoubleSummaryStatistics()).getAverage();
+        double mediumAvg = statsMap.getOrDefault("Medium", new DoubleSummaryStatistics()).getAverage();
+        double hardAvg = statsMap.getOrDefault("Hard", new DoubleSummaryStatistics()).getAverage();
+
         return List.of(easyAvg, mediumAvg, hardAvg);
     }
 

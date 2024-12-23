@@ -43,7 +43,7 @@ public class StatisticsController {
 
         Duration period = calculatePeriod(timeframe);
 
-        Map<String, Long> difficultyStats = appUser.getSolvedProblemsByDifficulty(leetCodeApiService, period);
+        List<Double> difficultyStats = appUser.getSolvedProblemsByDifficulty(leetCodeApiService, period);
         Map<String, Long> topicStats = appUser.getSolvedProblemsByTopic(leetCodeApiService, period);
         Map<DayOfWeek, Long> dayOfWeekStats = appUser.getSolvedProblemsByDayOfWeek();
         List<Double> avgTime = appUser.getAverageTimeToSolve(leetCodeApiService, period);
