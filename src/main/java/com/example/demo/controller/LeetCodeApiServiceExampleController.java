@@ -6,16 +6,21 @@ import com.example.demo.repository.RecordRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.userdetails.User;
 
 import com.example.demo.model.leetCodeApiService.Question;
 import com.example.demo.service.LeetCodeApiService;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class LeetCodeApiServiceExampleController {
@@ -39,19 +44,25 @@ public class LeetCodeApiServiceExampleController {
             @RequestParam String taskName,
             @RequestParam String taskTime,
             @RequestParam String completionDate,
+            @RequestParam String attemptNumber,
             HttpServletRequest request,
             Model model) {
 
+        Question question;
         try {
-            leetCodeApiService.getQuestion(taskName);
+            question = leetCodeApiService.getQuestion(taskName);
         } catch (Exception e) {
             return "redirect:/taskChosen?error=true";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        org.springframework.security.core.userdetails.User currentUser =
+                (org.springframework.security.core.userdetails.User)authentication.getPrincipal();
         AppUser appUser = userRepository.findByUsername(currentUser.getUsername());
-        TaskRecord record = new TaskRecord(taskName);
+        LocalDateTime date = LocalDate.parse(completionDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+        Duration duration = Duration.ofMinutes(Long.parseLong(taskTime));
+        Integer tryCounter = Integer.parseInt(attemptNumber);
+        TaskRecord record = new TaskRecord(taskName, date, duration, tryCounter);
         recordRepository.save(record);
         appUser.addRecord(record);
         userRepository.save(appUser);

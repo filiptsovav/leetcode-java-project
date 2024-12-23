@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.demo.model.leetCodeApiService.Question;
@@ -55,14 +55,20 @@ public class AppUser {
         records.add(record);
     }
 
-    public Map<String, Long> getSolvedProblemsByDifficulty(LeetCodeApiService service) {
+    public Map<String, Long> getSolvedProblemsByDifficulty(LeetCodeApiService service, Duration period) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startTime = now.minus(period);
         return records.stream()
+                .filter(record -> record.getDate().isAfter(startTime))
                 .map(record -> service.getQuestion(record.getTaskName()))
                 .collect(Collectors.groupingBy(Question::getDifficulty, Collectors.counting()));
     }
 
-    public Map<String, Long> getSolvedProblemsByTopic(LeetCodeApiService service) {
+    public Map<String, Long> getSolvedProblemsByTopic(LeetCodeApiService service, Duration period) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startTime = now.minus(period);
         return records.stream()
+                .filter(record -> record.getDate().isAfter(startTime))
                 .flatMap(record -> service.getQuestion(record.getTaskName()).getTopicTags().stream())
                 .collect(Collectors.groupingBy(TopicTag::getName, Collectors.counting()));
     }
@@ -70,5 +76,41 @@ public class AppUser {
     public Map<DayOfWeek, Long> getSolvedProblemsByDayOfWeek() {
         return records.stream()
                 .collect(Collectors.groupingBy(record -> record.getDate().getDayOfWeek(), Collectors.counting()));
+    }
+
+    public List<Double> getAverageTimeToSolve(LeetCodeApiService service, Duration period) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startTime = now.minus(period);
+        Map<String, DoubleSummaryStatistics> statsMap = new HashMap<>();
+        records.stream()
+                .filter(record -> record.getDate().isAfter(startTime))
+                .forEach(record -> {
+                    Question question = service.getQuestion(record.getTaskName());
+                    String difficulty = question.getDifficulty();
+                    long duration = record.getDuration().toMinutes();
+
+                    statsMap.computeIfAbsent(difficulty, k -> new DoubleSummaryStatistics()).accept(duration);
+                });
+        double easyAvg = statsMap.getOrDefault("easy", new DoubleSummaryStatistics()).getAverage();
+        double mediumAvg = statsMap.getOrDefault("medium", new DoubleSummaryStatistics()).getAverage();
+        double hardAvg = statsMap.getOrDefault("hard", new DoubleSummaryStatistics()).getAverage();
+        return List.of(easyAvg, mediumAvg, hardAvg);
+    }
+
+    public List<Long> getFirstAttemptStats(LeetCodeApiService service, Duration period) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startTime = now.minus(period);
+
+        long firstAttemptCount = records.stream()
+                .filter(record -> record.getDate().isAfter(startTime))
+                .filter(record -> record.getTryCounter() == 1) // Предполагается, что поле tryCounter указывает количество попыток
+                .count();
+
+        long notFirstAttemptCount = records.stream()
+                .filter(record -> record.getDate().isAfter(startTime))
+                .filter(record -> record.getTryCounter() > 1)
+                .count();
+
+        return List.of(firstAttemptCount, notFirstAttemptCount);
     }
 }
