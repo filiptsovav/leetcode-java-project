@@ -44,24 +44,14 @@
     </style>
 </head>
 <body>
-<div>
-    <h3>Отладочная информация</h3>
-    <pre>
-        Difficulty Stats: [[${difficultyStats}]]
-        Topic Stats: [[${topicStats}]]
-        Day of Week Stats: [[${dayOfWeekStats}]]
-        Average Time: [[${avgTime}]]
-        First Attempt: [[${firstAttempt}]]
-    </pre>
-</div>
 <div class="container">
     <h2>Статистика</h2>
     <div class="form-group">
         <label for="timeframe">Выберите период:</label>
-        <select id="timeframe" class="form-control" onchange="updateStatistics()">
-            <option value="week">Неделя</option>
-            <option value="month" selected>Месяц</option>
-            <option value="year">Год</option>
+        <select id="timeframe">
+            <option value="week" th:selected="${selectedPeriod == 'week'}">Неделя</option>
+            <option value="month" th:selected="${selectedPeriod == 'month'}">Месяц</option>
+            <option value="year" th:selected="${selectedPeriod == 'year'}">Год</option>
         </select>
     </div>
 
@@ -87,8 +77,7 @@
     const avgTimeData = JSON.parse([[${avgTime}]]);
     const firstAttemptData = JSON.parse([[${firstAttempt}]]);
 
-
-// Отладка
+    // Отладка
     console.log("Difficulty Stats:", difficultyStats);
     console.log("Topic Stats:", topicStats);
     console.log("Average Time Data:", avgTimeData);
@@ -160,8 +149,17 @@
     }
 
     window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedPeriod = urlParams.get('timeframe') || 'week'; // Значение по умолчанию
+        document.getElementById('timeframe').value = selectedPeriod;
         renderCharts();
     };
+</script>
+<script>
+    document.getElementById('timeframe').addEventListener('change', function () {
+        const selectedPeriod = this.value;
+        window.location.href = `/statistics?timeframe=${selectedPeriod}`;
+    });
 </script>
 </body>
 </html>
