@@ -6,13 +6,13 @@ import com.example.demo.repository.RecordRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.User;
 
 import com.example.demo.model.leetCodeApiService.Question;
 import com.example.demo.service.LeetCodeApiService;
@@ -48,16 +48,14 @@ public class LeetCodeApiServiceExampleController {
             HttpServletRequest request,
             Model model) {
 
-        Question question;
         try {
-            question = leetCodeApiService.getQuestion(taskName);
+            leetCodeApiService.getQuestion(taskName);
         } catch (Exception e) {
             return "redirect:/taskChosen?error=true";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User currentUser =
-                (org.springframework.security.core.userdetails.User)authentication.getPrincipal();
+        User currentUser = (User)authentication.getPrincipal();
         AppUser appUser = userRepository.findByUsername(currentUser.getUsername());
         LocalDateTime date = LocalDate.parse(completionDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
         Duration duration = Duration.ofMinutes(Long.parseLong(taskTime));
