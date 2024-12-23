@@ -45,12 +45,14 @@ public class LeetCodeApiService {
                             question(titleSlug: $titleSlug) {
                                 questionId
                                 title
+                                titleSlug
                                 difficulty
                                 content
                                 topicTags {
                                     name
                                     slug
                                 }
+                                similarQuestions
                             }
                         }",
                 "variables":{"titleSlug":"%s"}}
