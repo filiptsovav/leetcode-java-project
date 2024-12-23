@@ -17,10 +17,6 @@ public class DemoController {
         return "forward:/dashboard.html";
     }
 
-    @GetMapping("/statistics")
-    public String showStatistics() {
-        return "forward:/statistics.html";
-    }
 
     @GetMapping("/taskChosen")
     public String taskChosen() {
