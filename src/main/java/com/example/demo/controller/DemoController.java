@@ -22,11 +22,4 @@ public class DemoController {
     public String taskChosen() {
         return "taskChosen";
     }
-
-
-    @GetMapping("/taskSuggestion")
-    public String taskSuggestion() {
-        return "forward:/taskSuggestion.html";
-    }
-
 }
