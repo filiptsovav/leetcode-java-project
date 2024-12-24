@@ -47,3 +47,50 @@ button {
 button:hover {
     background-color: #4cae4c;
 }
+/* Основные стили */
+body.dark {
+    background-color: #343a40; /* Темный фон */
+    color: white; /* Светлый текст */
+}
+
+body.dark .card {
+    background-color: #495057; /* Темный фон для карточек */
+    color: white; /* Светлый текст для карточек */
+}
+
+/* Другие стили... */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.sun-icon,
+.moon-icon {
+    display: none; /* Скрываем иконки по умолчанию */
+}
+
+body.dark .sun-icon {
+    display: none; /* Скрываем солнце в темной теме */
+}
+
+body.dark .moon-icon {
+    display: block; /* Показываем луну в темной теме */
+}
+
+body .sun-icon {
+    display: block; /* Показываем солнце в светлой теме */
+}
+
+body .moon-icon {
+    display: none; /* Скрываем луну в светлой теме */
+}

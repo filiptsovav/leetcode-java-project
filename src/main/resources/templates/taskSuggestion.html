@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task List</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
@@ -11,6 +12,11 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark {
+            background-color: #343a40; /* Темный фон */
+            color: white; /* Светлый текст */
         }
         .task-container {
             display: grid;
@@ -30,6 +36,10 @@
             text-decoration: none;
             color: inherit;
         }
+        body.dark .task-card {
+            background-color: #495057; /* Темный фон карточек */
+            border-color: #6c757d; /* Цвет границы карточек в темной теме */
+        }
         .task-card:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 20px rgba(245, 40, 145, 0.8);
@@ -48,6 +58,10 @@
             border-radius: 5px;
             text-align: center;
             overflow: hidden;
+        }
+        body.dark .task-description {
+            background-color: rgba(70, 70, 70, 0.9); /* Темный фон для описания */
+            color: white; /* Светлый текст для описания */
         }
         .task-card:hover .task-description {
             display: flex;
@@ -77,9 +91,16 @@
             border-radius: 5px;
             text-align: center;
         }
+        body.dark .back-to-home {
+            background-color: #6c757d; /* Темный фон для кнопки "Вернуться" */
+            color: white; /* Светлый текст */
+        }
         .back-to-home:hover {
             background-color: #ffc8ff;
             text-decoration: none;
+        }
+        body.dark .back-to-home:hover {
+            background-color: #5a6268; /* Более темный фон при наведении */
         }
     </style>
     <script>
@@ -96,6 +117,11 @@
                     description.innerHTML = '<p>No content available</p>';
                 }
             });
+
+            // Проверяем предпочтения темы
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark');
+            }
         });
     </script>
 </head>
