@@ -41,6 +41,21 @@
         .small-chart-container {
             width: 45%;
         }
+                .back-to-home {
+            display: block;
+            margin: 30px auto 0;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            text-decoration: none;
+            color: black;
+            background-color: #ffc5e3;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .back-to-home:hover {
+            background-color: #ffc8ff;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +82,9 @@
     <div class="chart-container">
         <canvas id="tagsStatsChart"></canvas>
     </div>
+    <a href="dashboard.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i> Return to Home Page
+    </a>
 </div>
 
 <script th:inline="javascript">
