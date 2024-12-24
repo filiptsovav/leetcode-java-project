@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -13,6 +14,11 @@
             color: #333;
             margin: 0;
             padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark {
+            background-color: #343a40; /* Темный фон */
+            color: white; /* Светлый текст */
         }
         .container {
             max-width: 800px;
@@ -24,6 +30,9 @@
             font-weight: 600;
             color: #495057;
         }
+        body.dark h2 {
+            color: #f8f9fa; /* Светлый текст для заголовка в темной теме */
+        }
         .form-group {
             margin-bottom: 15px;
         }
@@ -34,6 +43,10 @@
             background-color: #ffffff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+        body.dark .chart-container {
+            background-color: #495057; /* Темный фон для контейнеров графиков */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Более темная тень */
+        }
         .charts-row {
             display: flex;
             justify-content: space-between;
@@ -41,7 +54,7 @@
         .small-chart-container {
             width: 45%;
         }
-                .back-to-home {
+        .back-to-home {
             display: block;
             margin: 30px auto 0;
             padding: 10px 20px;
@@ -52,9 +65,16 @@
             border-radius: 5px;
             text-align: center;
         }
+        body.dark .back-to-home {
+            background-color: #6c757d; /* Темный фон для кнопки "Вернуться" */
+            color: white; /* Светлый текст */
+        }
         .back-to-home:hover {
             background-color: #ffc8ff;
             text-decoration: none;
+        }
+        body.dark .back-to-home:hover {
+            background-color: #5a6268; /* Более темный фон при наведении */
         }
     </style>
 </head>
@@ -165,6 +185,11 @@
         const selectedPeriod = urlParams.get('timeframe') || 'week'; // Default value
         document.getElementById('timeframe').value = selectedPeriod;
         renderCharts();
+
+        // Проверяем предпочтения темы
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+        }
     };
 </script>
 <script>

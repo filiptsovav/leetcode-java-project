@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Task</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -15,6 +16,11 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark {
+            background-color: #343a40;
+            color: white;
         }
         .card {
             width: 100%;
@@ -22,6 +28,11 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark .card {
+            background-color: #495057;
+            color: white;
         }
         input[type="text"] {
             -moz-appearance: textfield;
@@ -42,9 +53,23 @@
         .tag.green { background-color: #28a745; }
         .tag.yellow { background-color: #ffc107; }
         .tag.blue { background-color: #007bff; }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #007bff; /* Цвет для светлой темы */
+        }
+        body.dark .theme-toggle {
+            color: #ffc107; /* Цвет для темной темы */
+        }
     </style>
 </head>
 <body>
+<div class="theme-toggle" id="themeToggle">
+    <i class="fas fa-sun"></i> <!-- Иконка солнца для светлой темы -->
+</div>
 <div class="card">
     <h2 class="text-center">Task Information</h2>
     <form action="/taskChosen" method="post" class="mt-4">
@@ -80,5 +105,27 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    // Проверяем предпочтения пользователя
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>'; // Иконка луны для темной темы
+    }
+
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+
+        // Сохраняем выбор темы в localStorage
+        if (document.body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>'; // Иконка луны
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // Иконка солнца
+        }
+    });
+</script>
 </body>
 </html>

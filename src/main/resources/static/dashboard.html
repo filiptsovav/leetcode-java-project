@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            /* background-image: url('NewYear.jpg');*/
             background-size: cover;
             background-position: center;
             margin: 0;
@@ -20,6 +19,7 @@
             height: 100vh;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
         .avatar {
             position: absolute;
@@ -55,16 +55,20 @@
             transition: background-color 0.3s, transform 0.3s;
         }
         .button:hover {
-            transform: scale(1.5); /* Scale on hover */
+            transform: scale(1.1);
         }
-        .button1 {
+        .button1, .button2, .button3 {
             background-color: #ffc5e3;
         }
-        .button2 {
-            background-color: #ffc5e3;
+        body.dark .button1:hover,
+        body.dark .button2:hover,
+        body.dark .button3:hover {
+            background-color: #ff69b4; /* Ярко-розовый цвет */
         }
-        .button3 {
-            background-color: #ffc5e3;
+        body .button1:hover,
+        body .button2:hover,
+        body .button3:hover {
+            background-color: #ff1493; /* Ярко-розовый цвет для светлой темы */
         }
         .logout-button {
             position: absolute;
@@ -80,12 +84,45 @@
             cursor: pointer;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             transition: background-color 0.3s;
+            width: auto;
         }
         .logout-button:hover {
             background-color: rgba(186, 28, 37, 0.9);
         }
         .logout-button i {
             margin-right: 5px;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .sun-icon,
+        .moon-icon {
+            display: none; /* Скрываем иконки по умолчанию */
+            width: 24px; /* Размер иконок */
+            height: 24px; /* Размер иконок */
+        }
+        body.dark .sun-icon {
+            display: none; /* Скрываем солнце в темной теме */
+        }
+        body.dark .moon-icon {
+            display: block; /* Показываем луну в темной теме */
+        }
+        body .sun-icon {
+            display: block; /* Показываем солнце в светлой теме */
+        }
+        body .moon-icon {
+            display: none; /* Скрываем луну в светлой теме */
         }
     </style>
 </head>
@@ -98,7 +135,10 @@
     <button class="button button2" onclick="location.href='/taskSuggestion'">Suggest a Task</button>
     <button class="button button3" onclick="location.href='/taskChosen'">Task Selected</button>
 </div>
-
+<div id="themeToggle" class="theme-toggle" onclick="toggleTheme()">
+    <img src="Sun.png" alt="Sun Icon" class="sun-icon">
+    <img src="Moon.png" alt="Moon Icon" class="moon-icon">
+</div>
 <button class="logout-button" onclick="confirmLogout()">
     <i class="fas fa-door-open"></i> Logout
 </button>
@@ -108,6 +148,27 @@
         if (confirm("Are you sure you want to log out?")) {
             location.href = '/logout';
         }
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark');
+        const themeToggle = document.getElementById('themeToggle');
+        if (document.body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            themeToggle.querySelector('.sun-icon').style.display = 'none';
+            themeToggle.querySelector('.moon-icon').style.display = 'block';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeToggle.querySelector('.sun-icon').style.display = 'block';
+            themeToggle.querySelector('.moon-icon').style.display = 'none';
+        }
+    }
+
+    // Установка начальной темы
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        document.querySelector('.sun-icon').style.display = 'none';
+        document.querySelector('.moon-icon').style.display = 'block';
     }
 </script>
 </body>
